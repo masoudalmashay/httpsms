@@ -222,6 +222,11 @@ SMTP_PASSWORD=
 SMTP_HOST=
 SMTP_PORT=
 
+# Optional: send a copy of each email notification to Telegram.
+# Create a bot with @BotFather, message it once, then set the bot token and chat ID.
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+
 # Firebase service account credentials
 FIREBASE_CREDENTIALS=
 
@@ -231,6 +236,19 @@ GCP_PROJECT_ID=
 # Cloudflare Turnstile secret key from step 3
 CLOUDFLARE_TURNSTILE_SECRET_KEY=
 ```
+
+For Gmail, enable two-step verification, create a Google **App Password**, then use the generated 16-character app password (not your normal Gmail password):
+
+```dotenv
+SMTP_FROM_NAME=httpSMS
+SMTP_FROM_EMAIL=your-address@gmail.com
+SMTP_USERNAME=your-address@gmail.com
+SMTP_PASSWORD=your-16-character-google-app-password
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+```
+
+Telegram is optional. When both `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` are set, httpSMS sends a Telegram copy in addition to every email notification.
 
 - Don't bother about the `EVENTS_QUEUE_USER_API_KEY` and `EVENTS_QUEUE_USER_ID` settings. We will set that up later.
 

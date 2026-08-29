@@ -1116,7 +1116,7 @@ func (container *Container) UserService() (service *services.UserService) {
 // Mailer creates a new instance of emails.Mailer
 func (container *Container) Mailer() (mailer emails.Mailer) {
 	container.logger.Debug("creating emails.Mailer")
-	return emails.NewSMTPEmailService(
+	mailers := []emails.Mailer{emails.NewSMTPEmailService(
 		container.Tracer(),
 		emails.SMTPConfig{
 			FromName:  os.Getenv("SMTP_FROM_NAME"),
@@ -1126,7 +1126,16 @@ func (container *Container) Mailer() (mailer emails.Mailer) {
 			Hostname:  os.Getenv("SMTP_HOST"),
 			Port:      os.Getenv("SMTP_PORT"),
 		},
-	)
+	)}
+
+	if token, chatID := os.Getenv("TELEGRAM_BOT_TOKEN"), os.Getenv("TELEGRAM_CHAT_ID"); token != "" && chatID != "" {
+		mailers = append(mailers, emails.NewTelegramMailer(emails.TelegramConfig{
+			BotToken: token,
+			ChatID:   chatID,
+		}))
+	}
+
+	return emails.NewMultiMailer(mailers...)
 }
 
 // UserEmailFactory creates a new instance of emails.UserEmailFactory
