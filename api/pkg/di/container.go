@@ -2040,13 +2040,21 @@ func logger(skipFrameCount int) telemetry.Logger {
 }
 
 func logDriver(skipFrameCount int) *zerodriver.Logger {
-	if isLocal() || strings.TrimSpace(os.Getenv("AXIOM_TOKEN")) == "" {
+	if isLocal() || !axiomConfigured() {
 		return consoleLogger(skipFrameCount)
 	}
 	return axiomLogger(skipFrameCount)
 }
 
+func axiomConfigured() bool {
+	return strings.TrimSpace(os.Getenv("AXIOM_TOKEN")) != "" && strings.TrimSpace(os.Getenv("AXIOM_DATASET_EVENTS")) != ""
+}
+
 func axiomLogger(skipFrameCount int) *zerodriver.Logger {
+	if !axiomConfigured() {
+		return consoleLogger(skipFrameCount)
+	}
+
 	axiomWriter, err := axiomzerolog.New(
 		axiomzerolog.SetLevels([]zerolog.Level{zerolog.TraceLevel, zerolog.DebugLevel, zerolog.InfoLevel, zerolog.WarnLevel, zerolog.ErrorLevel, zerolog.PanicLevel, zerolog.FatalLevel, zerolog.NoLevel}),
 		axiomzerolog.SetDataset(os.Getenv("AXIOM_DATASET_EVENTS")),

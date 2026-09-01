@@ -65,16 +65,6 @@ function goToPricing() {
               variant="text"
               color="primary"
               class="my-5 mr-2"
-              @click="goToPricing"
-            >
-              Pricing
-            </v-btn>
-            <v-btn
-              v-show="lgAndUp"
-              size="large"
-              variant="text"
-              color="primary"
-              class="my-5 mr-2"
               :to="{ name: 'blog' }"
             >
               Blog
@@ -101,8 +91,7 @@ function goToPricing() {
               :size="lgAndUp ? 'large' : 'default'"
               :to="{ name: 'login' }"
             >
-              Get Started
-              <span v-show="lgAndUp">&nbsp;For Free</span>
+              Login
             </v-btn>
             <div
               v-show="authStore.authStateChanged && authStore.authUser !== null"

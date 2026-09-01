@@ -53,6 +53,10 @@ func (service *BillingService) IsEntitledWithCount(ctx context.Context, userID e
 	ctx, span, ctxLogger := service.tracer.StartWithLogger(ctx, service.logger)
 	defer span.End()
 
+	if entities.PersonalUseUnlimited() {
+		return nil
+	}
+
 	user, err := service.userRepository.Load(ctx, userID)
 	if err != nil {
 		ctxLogger.Error(service.tracer.WrapErrorSpan(span, stacktrace.Propagatef(err, "cannot load user with ID [%s], entitlement successful", userID)))
@@ -212,21 +216,6 @@ func (service *BillingService) sendUsageAlert(ctx context.Context, userID entiti
 }
 
 func (service *BillingService) shouldSendAlert(user *entities.User, usage *entities.BillingUsage) bool {
-	if user.IsOnFreePlan() && (usage.TotalMessages() == 160 || usage.TotalMessages() == 180 || usage.TotalMessages() == 190) {
-		return true
-	}
-
-	if user.IsOnProPlan() && (usage.TotalMessages() == 4000 || usage.TotalMessages() == 4500 || usage.TotalMessages() == 4750) {
-		return true
-	}
-
-	if user.IsOnUltraPlan() && (usage.TotalMessages() == 8000 || usage.TotalMessages() == 9000 || usage.TotalMessages() == 9500) {
-		return true
-	}
-
-	if user.IsOn20kPlan() && (usage.TotalMessages() == 16000 || usage.TotalMessages() == 18000 || usage.TotalMessages() == 19000) {
-		return true
-	}
-
+	// Personal-use deployment: usage alerts and price-plan limits are intentionally disabled.
 	return false
 }

@@ -27,7 +27,7 @@ const notificationsStore = useNotificationsStore()
 const appStore = useAppStore()
 
 const loading = ref(false)
-const showEmailForm = ref(false)
+const showEmailForm = ref(true)
 const isSignUp = ref(false)
 const showForgotPassword = ref(false)
 const resetEmailSent = ref(false)
@@ -296,76 +296,7 @@ function getGeneralErrorMessage(
 
 <template>
   <div>
-    <v-btn
-      block
-      color="white"
-      size="large"
-      class="mb-3 position-relative"
-      :loading="loading"
-      :disabled="loading"
-      @click="signInWithGoogle"
-    >
-      <v-chip
-        v-if="lastUsedMethod === 'google'"
-        size="x-small"
-        color="primary"
-        label
-        variant="flat"
-        class="position-absolute last-used-chip"
-      >
-        Last Used
-      </v-chip>
-      <v-icon color="red" :icon="mdiGoogle" class="mr-2" />
-      Continue with Google
-    </v-btn>
-
-    <v-btn
-      block
-      size="large"
-      variant="flat"
-      color="black"
-      class="mb-3 position-relative"
-      :loading="loading"
-      :disabled="loading"
-      @click="signInWithGithub"
-    >
-      <v-chip
-        v-if="lastUsedMethod === 'github'"
-        label
-        size="x-small"
-        color="primary"
-        variant="flat"
-        class="position-absolute last-used-chip"
-      >
-        Last Used
-      </v-chip>
-      <v-icon :icon="mdiGithub" class="mr-2" />
-      Continue with GitHub
-    </v-btn>
-
-    <v-btn
-      v-if="!showEmailForm"
-      block
-      size="large"
-      variant="flat"
-      color="red"
-      class="mb-3 position-relative"
-      :disabled="loading"
-      @click="showEmailForm = true"
-    >
-      <v-chip
-        v-if="lastUsedMethod === 'email'"
-        label
-        size="x-small"
-        color="primary"
-        variant="flat"
-        class="position-absolute last-used-chip"
-      >
-        Last Used
-      </v-chip>
-      <v-icon :icon="mdiEmail" class="mr-2" />
-      Continue with email
-    </v-btn>
+    <!-- Social login is intentionally disabled for this personal-use deployment. The code remains in place for future re-enablement. -->
 
     <!-- Forgot Password Form -->
     <v-form
@@ -491,18 +422,7 @@ function getGeneralErrorMessage(
       >
         {{ isSignUp ? 'Sign Up' : 'Sign In' }}
       </v-btn>
-      <v-btn
-        block
-        variant="plain"
-        size="small"
-        color="primary"
-        class="mt-2"
-        @click="toggleAuthMode"
-      >
-        {{
-          isSignUp ? 'Already have an account? Sign In' : 'No account? Sign Up'
-        }}
-      </v-btn>
+      <!-- Registration is disabled for this single-user deployment. The underlying Firebase signup flow remains available for manual database setup, but the UI no longer exposes it. -->
     </v-form>
 
     <p class="text-body-small text-medium-emphasis mt-4">

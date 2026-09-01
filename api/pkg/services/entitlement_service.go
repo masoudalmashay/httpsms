@@ -82,6 +82,10 @@ func (service *EntitlementService) CheckAdditional(
 		return &EntitlementCheckResult{Allowed: true}, nil
 	}
 
+	if entities.PersonalUseUnlimited() {
+		return &EntitlementCheckResult{Allowed: true}, nil
+	}
+
 	limits, hasConfiguredLimits := entityLimits[entityName]
 	if !hasConfiguredLimits && entityName != entities.EntityNameContact {
 		return &EntitlementCheckResult{Allowed: true}, nil

@@ -202,10 +202,6 @@ async function logout() {
           <template #prepend><v-icon :icon="mdiDownload" /></template>
           <v-list-item-title>Download App</v-list-item-title>
         </v-list-item>
-        <v-list-item :to="{ name: 'billing' }">
-          <template #prepend><v-icon :icon="mdiFinance" /></template>
-          <v-list-item-title>Usage & Billing</v-list-item-title>
-        </v-list-item>
         <v-list-item @click.prevent="logout">
           <template #prepend><v-icon :icon="mdiLogout" /></template>
           <v-list-item-title>Logout</v-list-item-title>

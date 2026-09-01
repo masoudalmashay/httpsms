@@ -27,8 +27,12 @@ import {
 } from '@mdi/js'
 
 definePageMeta({
-  layout: 'website',
-  middleware: ['redirect-to-threads'],
+  layout: 'blank',
+  middleware: ['guest'],
+})
+
+onMounted(() => {
+  navigateTo('/login')
 })
 
 useSeoMeta({

@@ -27,3 +27,4 @@ logs
 
 # ESLint cache
 .eslintcache
+.vercel

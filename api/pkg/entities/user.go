@@ -1,6 +1,8 @@
 package entities
 
 import (
+	"os"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -17,7 +19,7 @@ func (id UserID) String() string {
 // SubscriptionName is the name of the subscription
 type SubscriptionName string
 
-// Limit returns the limit of a subscription
+// Limit returns the limit of a subscription.
 func (subscription SubscriptionName) Limit() uint {
 	switch subscription {
 	case SubscriptionNameProMonthly, SubscriptionNameProYearly, SubscriptionNameProLifetime:
@@ -35,6 +37,12 @@ func (subscription SubscriptionName) Limit() uint {
 	default:
 		return 200
 	}
+}
+
+// PersonalUseUnlimited returns true when the app is explicitly configured for a single-user, unlimited deployment.
+func PersonalUseUnlimited() bool {
+	value := strings.TrimSpace(os.Getenv("PERSONAL_USE_UNLIMITED"))
+	return value == "1" || strings.EqualFold(value, "true") || strings.EqualFold(value, "yes") || strings.EqualFold(value, "on")
 }
 
 // SubscriptionNameFree represents a free subscription
